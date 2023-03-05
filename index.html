@@ -1227,6 +1227,7 @@
         xhr.send(JSON.stringify(requestBody));
     }
 
+    const TIME_ZONE = 9 * 60 * 60 * 1000;
     function loadMessages() {
         var xhr = new XMLHttpRequest();
         xhr.open("GET", `${domain}/messages?page=${pageNumber}&size=${pageSize}&sort=createdAt,desc`);
@@ -1243,7 +1244,9 @@
                 }
 
                 for (message of messages) {
-                    createMessage(message.id, message.username, message.content, message.dateTime);
+                    var date = new Date(message.dateTime);
+                    var kstDateTime = new Date(date.getTime() + TIME_ZONE).toLocaleString();
+                    createMessage(message.id, message.username, message.content, kstDateTime);
                 }
             }
         };
@@ -1252,6 +1255,7 @@
     }
 
     function createMessage(messageId, name, content, datetime) {
+        content = content.replace("&lt;br/&gt;", "<br/>");
         let template = `
         <div class="guest-message-wrapper">
             <p class="guest-message-info">
