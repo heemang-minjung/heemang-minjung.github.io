@@ -1222,8 +1222,7 @@
                 password.value = null;
                 content.value = null;
                 pageNumber = 0;
-                processing = true;
-                clearMessages();
+                processing = false;
                 loadMessages();
                 alert('축하해주셔서 감사드립니다.');
             }
@@ -1251,6 +1250,10 @@
                     messageMoreBtn.style.display = "none";
                 } else {
                     messageMoreBtn.style.display = "inline-block";
+                }
+
+                if (pageNumber == 0) {
+                    clearMessages();
                 }
 
                 for (message of messages) {
@@ -1298,7 +1301,6 @@
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     pageNumber = 0;
-                    clearMessages();
                     loadMessages();
                     alert('메세지가 삭제되었습니다.')
                 } else {
